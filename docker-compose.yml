@@ -10,7 +10,7 @@ volumes:
 
 services:
   cron:
-    image: docker:24-cli
+    image: docker:28-cli
     container_name: cron_scheduler
     command: sh -c "crond -f -l 2"
     working_dir: /workspace
