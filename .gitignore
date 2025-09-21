@@ -1,0 +1,12 @@
+# Logs
+logs
+*.log
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+
+mapproxy/cache_data/
+metoffice-datahub/
+company-data/
