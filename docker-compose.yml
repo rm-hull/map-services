@@ -115,6 +115,32 @@ services:
       - default
       - homelab-net
 
+  company-data-import:
+    container_name: company_data_import
+    image: ghcr.io/rm-hull/company-data-api:latest
+    command:
+      - "import-companies-house"
+      - "--zip-file"
+      - "https://download.companieshouse.gov.uk/BasicCompanyDataAsOneFile-2025-09-01.zip"
+    volumes:
+      - ./data/company-data:/data/
+    env_file:
+      - .env
+    restart: never
+
+  code-point-import:
+    container_name: code_point_import
+    image: ghcr.io/rm-hull/company-data-api:latest
+    command:
+      - "import-code-point"
+      - "--zip-file"
+      - "https://api.os.uk/downloads/v1/products/CodePointOpen/downloads?area=GB&format=CSV&redirect"
+    volumes:
+      - ./data/company-data:/data/
+    env_file:
+      - .env
+    restart: never
+
   poi-server:
     container_name: poi_server
     image: ghcr.io/rm-hull/geods-poi-api:latest
