@@ -10,3 +10,5 @@ logs
 mapproxy/cache_data/
 metoffice-datahub/
 company-data/
+street-manager-relay/
+geods-poi/

@@ -114,3 +114,83 @@ services:
     networks:
       - default
       - homelab-net
+
+  poi-server:
+    container_name: poi_server
+    image: ghcr.io/rm-hull/geods-poi-api:latest
+    command:
+      - poi
+      - http-server
+      - "--db=/data/poi_uk.gpkg"
+      - "--port=8080"
+    volumes:
+      - ./geods-poi/poi_uk.gpkg:/data/poi_uk.gpkg:ro
+    environment:
+      - UNSPLASH_ACCESS_KEY
+    env_file:
+      - .env
+    restart: always
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.poi-server.entrypoints=websecure"
+      - "traefik.http.routers.poi-server.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/geods-poi/`)"
+      - "traefik.http.services.poi-server.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/geods-poi"
+      - "dockflare.service=http://poi-server:8080"
+    networks:
+      - default
+      - homelab-net
+
+  postcode-polygons:
+    container_name: postcode_polygons
+    image: ghcr.io/rm-hull/postcode-polygons:latest
+    command:
+      - api-server
+    env_file:
+      - .env
+    restart: always
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.postcode-polygons.entrypoints=websecure"
+      - "traefik.http.routers.postcode-polygons.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/postcode/`)"
+      - "traefik.http.services.postcode-polygons.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/postcode"
+      - "dockflare.service=http://postcode-polygons:8080"
+    networks:
+      - default
+      - homelab-net
+
+  street-manager-relay:
+    container_name: street_manager_relay
+    image: ghcr.io/rm-hull/street-manager-relay:latest
+    command:
+      - api-server
+      - "--db=/data/street-manager.db"
+      - "--port=8080"
+    volumes:
+      - ./street-manager-relay:/data
+    env_file:
+      - .env
+    restart: always
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.street-manager-relay.entrypoints=websecure"
+      - "traefik.http.routers.street-manager-relay.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/street-manager-relay/`)"
+      - "traefik.http.services.street-manager-relay.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/treet-manager-relay"
+      - "dockflare.service=http://street-manager-relay:8080"
+    networks:
+      - default
+      - homelab-net
