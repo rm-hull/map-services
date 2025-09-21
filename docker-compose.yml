@@ -87,3 +87,30 @@ services:
     networks:
       - default
       - homelab-net
+
+  company-data:
+    container_name: company_data
+    image: ghcr.io/rm-hull/company-data-api:latest
+    command:
+      - api-server
+      - "--db=/data/companies_data.db"
+      - "--port=8080"
+    volumes:
+      - ./company-data:/data/
+    env_file:
+      - .env
+    restart: always
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.company-data.entrypoints=websecure"
+      - "traefik.http.routers.company-data.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/company-data/`)"
+      - "traefik.http.services.company-data.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/company-data"
+      - "dockflare.service=http://company-data:8080"
+    networks:
+      - default
+      - homelab-net
