@@ -126,7 +126,9 @@ services:
       - ./data/company-data:/data/
     env_file:
       - .env
-    restart: never
+    restart: no
+    healthcheck:
+      disable: true
 
   code-point-import:
     container_name: code_point_import
@@ -139,7 +141,9 @@ services:
       - ./data/company-data:/data/
     env_file:
       - .env
-    restart: never
+    restart: no
+    healthcheck:
+      disable: true
 
   poi-server:
     container_name: poi_server
