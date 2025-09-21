@@ -121,7 +121,8 @@ services:
     command:
       - "import-companies-house"
       - "--db=/data/companies_data.db"
-      - "--zip-file=https://download.companieshouse.gov.uk/BasicCompanyDataAsOneFile-2025-09-01.zip"
+      - "--zip-file=https://download.companieshouse.gov.uk/BasicCompanyDataAsOneFile-{{yyyy}}-{{mm}}-01.zip"
+      # See: https://download.companieshouse.gov.uk/en_output.html
     volumes:
       - ./data/company-data:/data/
     env_file:
@@ -137,6 +138,7 @@ services:
       - "import-code-point"
       - "--db=/data/companies_data.db"
       - "--zip-file=https://api.os.uk/downloads/v1/products/CodePointOpen/downloads?area=GB&format=CSV&redirect"
+      # See: https://osdatahub.os.uk/downloads/open/CodePointOpen
     volumes:
       - ./data/company-data:/data/
     env_file:
@@ -224,3 +226,10 @@ services:
     networks:
       - default
       - homelab-net
+
+  temp-job:
+    image: alpine
+    command: sh -c "echo Hello from my-job at $(date)"
+    restart: no
+    healthcheck:
+      disable: true
