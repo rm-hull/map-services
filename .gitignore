@@ -7,8 +7,5 @@ logs
 .env.test
 .env.local
 
-mapproxy/cache_data/
-metoffice-datahub/
-company-data/
-street-manager-relay/
-geods-poi/
+data/
+!data/**/.gitkeep

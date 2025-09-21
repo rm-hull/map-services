@@ -28,7 +28,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./mapproxy/config:/tmp
+      - ./mapproxy.template.yaml:/tmp/mapproxy.template.yaml
       - config_volume:/output
     command: >
       sh -c "
@@ -45,7 +45,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - config_volume:/mapproxy/config
-      - ./mapproxy/cache_data:/mapproxy/cache_data
+      - ./data/mapproxy/cache_data:/mapproxy/cache_data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mapproxy.entrypoints=websecure"
@@ -68,7 +68,7 @@ services:
       - "--root=/data/metoffice-datahub"
       - "--port=8080"
     volumes:
-      - ./metoffice-datahub:/data/metoffice-datahub
+      - ./data/metoffice-datahub:/data/metoffice-datahub
     env_file:
       - .env
     restart: always
@@ -96,7 +96,7 @@ services:
       - "--db=/data/companies_data.db"
       - "--port=8080"
     volumes:
-      - ./company-data:/data/
+      - ./data/company-data:/data/
     env_file:
       - .env
     restart: always
@@ -119,12 +119,12 @@ services:
     container_name: poi_server
     image: ghcr.io/rm-hull/geods-poi-api:latest
     command:
-      - poi
-      - http-server
+      - "poi"
+      - "http-server"
       - "--db=/data/poi_uk.gpkg"
       - "--port=8080"
     volumes:
-      - ./geods-poi/poi_uk.gpkg:/data/poi_uk.gpkg:ro
+      - ./data/geods-poi/poi_uk.gpkg:/data/poi_uk.gpkg:ro
     environment:
       - UNSPLASH_ACCESS_KEY
     env_file:
@@ -176,7 +176,7 @@ services:
       - "--db=/data/street-manager.db"
       - "--port=8080"
     volumes:
-      - ./street-manager-relay:/data
+      - ./data/street-manager-relay:/data
     env_file:
       - .env
     restart: always
