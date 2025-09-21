@@ -9,6 +9,19 @@ volumes:
   config_volume:
 
 services:
+  cron:
+    image: docker:24-cli
+    container_name: cron
+    command: sh -c "crond -f -l 2"
+    working_dir: /workspace
+    volumes:
+      - ./crontab:/etc/crontabs/root
+      - ./docker-compose.yml:/workspace/docker-compose.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - default
+      - homelab-net
+
   mapproxy-config-generator:
     image: alpine
     env_file:
@@ -73,5 +86,3 @@ services:
     networks:
       - default
       - homelab-net
-
-
