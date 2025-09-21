@@ -12,7 +12,7 @@ services:
   mapproxy-config-generator:
     image: alpine
     env_file:
-      - .env.local
+      - .env
     volumes:
       - ./mapproxy/config:/tmp
       - config_volume:/output
