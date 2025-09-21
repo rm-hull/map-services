@@ -92,7 +92,7 @@ services:
     container_name: company_data
     image: ghcr.io/rm-hull/company-data-api:latest
     command:
-      - api-server
+      - "api-server"
       - "--db=/data/companies_data.db"
       - "--port=8080"
     volumes:
@@ -120,8 +120,8 @@ services:
     image: ghcr.io/rm-hull/company-data-api:latest
     command:
       - "import-companies-house"
-      - "--zip-file"
-      - "https://download.companieshouse.gov.uk/BasicCompanyDataAsOneFile-2025-09-01.zip"
+      - "--db=/data/companies_data.db"
+      - "--zip-file=https://download.companieshouse.gov.uk/BasicCompanyDataAsOneFile-2025-09-01.zip"
     volumes:
       - ./data/company-data:/data/
     env_file:
@@ -133,8 +133,8 @@ services:
     image: ghcr.io/rm-hull/company-data-api:latest
     command:
       - "import-code-point"
-      - "--zip-file"
-      - "https://api.os.uk/downloads/v1/products/CodePointOpen/downloads?area=GB&format=CSV&redirect"
+      - "--db=/data/companies_data.db"
+      - "--zip-file=https://api.os.uk/downloads/v1/products/CodePointOpen/downloads?area=GB&format=CSV&redirect"
     volumes:
       - ./data/company-data:/data/
     env_file:
