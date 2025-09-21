@@ -22,6 +22,21 @@ services:
       - default
       - homelab-net
 
+  du-exporter:
+    container_name: du_exporter
+    image: ghcr.io/rm-hull/du-exporter:latest
+    command:
+      - "--root=/data"
+      - "--port=8080"
+    volumes:
+      - ./data:/data:ro
+    restart: always
+    healthcheck:
+      disable: false
+    networks:
+      - default
+      - homelab-net
+
   mapproxy-config-generator:
     image: alpine
     container_name: mapproxy_config_generator
