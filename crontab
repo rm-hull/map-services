@@ -1,3 +1,4 @@
+########################################################################
 # ┌───────────── minute (0 - 59)
 # │ ┌───────────── hour (0 - 23)
 # │ │   ┌───────────── day of month (1 - 31)
@@ -6,7 +7,9 @@
 # │ │   │   │   │
 # │ │   │   │   │
 # * *   *   *   *  command to execute
+########################################################################
+*/5 *   *   *   * cd /workspace && docker compose up -d temp-job
+0   3   7   *   * cd /workspace && docker compose up -d code-point-import
+0   4   7   *   * cd /workspace && docker compose up -d company-data-import
 
-*/5 *   *   *   * docker compose up temp-job
-0   3   7   *   * docker compose up code-point-import
-0   4   7   *   * docker compose up company-data-import
+########################################################################

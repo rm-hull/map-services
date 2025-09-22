@@ -12,11 +12,12 @@ services:
   cron:
     image: docker:28-cli
     container_name: cron_scheduler
-    command: sh -c "crond -f -l 2"
+    command: sh -c "crontab -l && crond -f -l 2"
     working_dir: /workspace
     volumes:
-      - ./crontab:/etc/crontabs/root
+      - ./crontab:/var/spool/cron/crontabs/root
       - ./docker-compose.yml:/workspace/docker-compose.yml
+      - ./.env:/workspace/.env
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - default
