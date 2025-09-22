@@ -236,7 +236,7 @@ services:
       - "traefik.http.services.street-manager-relay.loadbalancer.server.port=8080"
       - "dockflare.enable=true"
       - "dockflare.hostname=api.destructuring-bind.org"
-      - "dockflare.path=/v1/treet-manager-relay"
+      - "dockflare.path=/v1/street-manager-relay"
       - "dockflare.service=http://street-manager-relay:8080"
     networks:
       - default
