@@ -9,7 +9,7 @@
 # * *   *   *   *  command to execute
 ########################################################################
 PATH=/usr/local/bin:/usr/bin:/bin
-*/5 *   *   *   * cd /workspace && docker compose up -d temp-job
+0   5   *   *   * cd /workspace && docker compose up -d uk-weather-download
 0   3   7   *   * cd /workspace && docker compose up -d code-point-import
 0   4   7   *   * cd /workspace && docker compose up -d company-data-import
 ########################################################################
