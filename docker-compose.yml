@@ -48,8 +48,8 @@ services:
   mapproxy-config-generator:
     image: alpine
     container_name: mapproxy_config_generator
-    env_file:
-      - .env
+    environment:
+      - OS_DATAHUB_API_KEY=${OS_DATAHUB_API_KEY}
     volumes:
       - ./mapproxy.template.yaml:/tmp/mapproxy.template.yaml
       - config_volume:/output
@@ -92,8 +92,6 @@ services:
       - "--port=8080"
     volumes:
       - ./data/metoffice-datahub:/data/metoffice-datahub
-    env_file:
-      - .env
     restart: always
     healthcheck:
       disable: false
@@ -119,8 +117,9 @@ services:
       - "--root=/data/metoffice-datahub"
     volumes:
       - ./data/metoffice-datahub:/data/metoffice-datahub
-    env_file:
-      - .env
+    environment:
+      - METOFFICE_DATAHUB_API_KEY=${METOFFICE_DATAHUB_API_KEY}
+      - METOFFICE_ORDER_ID=${METOFFICE_ORDER_ID}
     restart: no
     healthcheck:
       disable: true
@@ -134,8 +133,6 @@ services:
       - "--port=8080"
     volumes:
       - ./data/company-data:/data/
-    env_file:
-      - .env
     restart: always
     healthcheck:
       disable: false
@@ -162,8 +159,6 @@ services:
       # See: https://download.companieshouse.gov.uk/en_output.html
     volumes:
       - ./data/company-data:/data/
-    env_file:
-      - .env
     restart: no
     healthcheck:
       disable: true
@@ -178,8 +173,6 @@ services:
       # See: https://osdatahub.os.uk/downloads/open/CodePointOpen
     volumes:
       - ./data/company-data:/data/
-    env_file:
-      - .env
     restart: no
     healthcheck:
       disable: true
@@ -195,9 +188,7 @@ services:
     volumes:
       - ./data/geods-poi/poi_uk.gpkg:/data/poi_uk.gpkg:ro
     environment:
-      - UNSPLASH_ACCESS_KEY
-    env_file:
-      - .env
+      - UNSPLASH_ACCESS_KEY=${UNSPLASH_ACCESS_KEY}
     restart: always
     healthcheck:
       disable: false
@@ -219,8 +210,6 @@ services:
     image: ghcr.io/rm-hull/postcode-polygons:latest
     command:
       - api-server
-    env_file:
-      - .env
     restart: always
     healthcheck:
       disable: false
@@ -246,8 +235,6 @@ services:
       - "--port=8080"
     volumes:
       - ./data/street-manager-relay:/data
-    env_file:
-      - .env
     restart: always
     healthcheck:
       disable: false
