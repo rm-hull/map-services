@@ -249,4 +249,26 @@ services:
       - "dockflare.service=http://street-manager-relay:8080"
     networks:
       - default
+
+  place-names:
+    container_name: place_names
+    image: ghcr.io/rm-hull/placenames-api:latest
+    command:
+      - api-server
+      - "--file=/data/placenames_with_relevancy.csv.gz"
+      - "--port=8080"
+    restart: always
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.place-names.entrypoints=websecure"
+      - "traefik.http.routers.place-names.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/place-names/`)"
+      - "traefik.http.services.place-names.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/place-names"
+      - "dockflare.service=http://place-names:8080"
+    networks:
+      - default
       - homelab-net
