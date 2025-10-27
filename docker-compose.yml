@@ -238,6 +238,9 @@ services:
     restart: always
     healthcheck:
       disable: false
+    environment:
+      - SENTRY_DSN=${STREET_MANAGER_RELAY_SENTRY_DSN}
+      - MODE=production
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.street-manager-relay.entrypoints=websecure"
@@ -249,6 +252,7 @@ services:
       - "dockflare.service=http://street-manager-relay:8080"
     networks:
       - default
+      - homelab-net
 
   place-names:
     container_name: place_names
@@ -257,6 +261,7 @@ services:
       - api-server
       - "--file=/data/placenames_with_relevancy.csv.gz"
       - "--port=8080"
+      - "--top-k=10"
     restart: always
     healthcheck:
       disable: false
