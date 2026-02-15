@@ -95,6 +95,9 @@ services:
     restart: always
     healthcheck:
       disable: false
+    environment:
+      - METOFFICE_DATAHUB_API_KEY=${METOFFICE_DATAHUB_API_KEY}
+      - METOFFICE_ORDER_ID=${METOFFICE_ORDER_ID}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.uk-weather-overlays.entrypoints=websecure"
@@ -274,6 +277,34 @@ services:
       - "dockflare.hostname=api.destructuring-bind.org"
       - "dockflare.path=/v1/place-names"
       - "dockflare.service=http://place-names:8080"
+    networks:
+      - default
+      - homelab-net
+
+  fuel-prices:
+    container_name: fuel_prices
+    image: ghcr.io/rm-hull/fuel-prices-api:latest
+    command:
+      - "api-server"
+      - "--db=/data/fuel_prices.db"
+      - "--port=8080"
+    volumes:
+      - ./data/fuel-prices:/data/
+    restart: always
+    environment:
+      - CLIENT_ID=${FUEL_PRICES_CLIENT_ID}
+      - CLIENT_SECRET=${FUEL_PRICES_CLIENT_SECRET}
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fuel-prices.entrypoints=websecure"
+      - "traefik.http.routers.fuel-prices.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/fuel-prices/`)"
+      - "traefik.http.services.fuel-prices.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/fuel-prices"
+      - "dockflare.service=http://fuel-prices:8080"
     networks:
       - default
       - homelab-net
