@@ -294,6 +294,8 @@ services:
     environment:
       - CLIENT_ID=${FUEL_PRICES_CLIENT_ID}
       - CLIENT_SECRET=${FUEL_PRICES_CLIENT_SECRET}
+      - SENTRY_DSN=${FUEL_PRICES_SENTRY_DSN}
+      - ENVIRONMENT=${FUEL_PRICES_ENVIRONMENT}
     healthcheck:
       disable: false
     labels:
