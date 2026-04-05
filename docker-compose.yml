@@ -62,7 +62,7 @@ services:
   mapproxy:
     container_name: mapproxy
     restart: unless-stopped
-    image: ghcr.io/mapproxy/mapproxy/mapproxy:5.0.0-alpine-nginx
+    image: ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1-alpine-nginx
     depends_on:
       mapproxy-config-generator:
         condition: service_completed_successfully
