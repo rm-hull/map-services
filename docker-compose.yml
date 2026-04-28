@@ -310,3 +310,40 @@ services:
     networks:
       - default
       - homelab-net
+
+  next-departures:
+    container_name: next_departures
+    image: ghcr.io/rm-hull/next-departures-api:latest
+    command:
+      - "api-server"
+      - "--db=/data/next_departures.db"
+      - "--port=8080"
+    volumes:
+      - ./data/next-departures:/data/
+    restart: always
+    healthcheck:
+      disable: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.next-departures.entrypoints=websecure"
+      - "traefik.http.routers.next-departures.rule=Host(`api.homelab.destructuring-bind.org`) && PathPrefix(`/v1/next-departures/`)"
+      - "traefik.http.services.next-departures.loadbalancer.server.port=8080"
+      - "dockflare.enable=true"
+      - "dockflare.hostname=api.destructuring-bind.org"
+      - "dockflare.path=/v1/next-departures"
+      - "dockflare.service=http://next-departures:8080"
+    networks:
+      - default
+      - homelab-net
+
+  next-departures-import:
+    container_name: next_departures_import
+    image: ghcr.io/rm-hull/next-departures-api:latest
+    command:
+      - "import"
+      - "--db=/data/next_departures.db"
+    volumes:
+      - ./data/next-departures:/data/
+    restart: no
+    healthcheck:
+      disable: true
