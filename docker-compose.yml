@@ -321,6 +321,11 @@ services:
     volumes:
       - ./data/next-departures:/data/
     restart: always
+    environment:
+      - SENTRY_DSN=${NEXT_DEPARTURES_SENTRY_DSN}
+      - ENVIRONMENT=${NEXT_DEPARTURES_ENVIRONMENT}
+      - TRANSPORTAPI_APP_ID=${NEXT_DEPARTURES_TRANSPORTAPI_APP_ID}
+      - TRANSPORTAPI_APP_KEY=${NEXT_DEPARTURES_TRANSPORTAPI_APP_KEY}
     healthcheck:
       disable: false
     labels:
